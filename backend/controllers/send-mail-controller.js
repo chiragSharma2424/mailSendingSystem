@@ -30,7 +30,7 @@ const sendMail = async(req, res) => {
          await transporter.sendMail(mailOptions);
 
           res.json({
-            msg: `Email sent successfully to ${reciverEmail}`
+            msg: `Email sent successfully to ${reciverMail}`
         });
         }
     } catch(err) {

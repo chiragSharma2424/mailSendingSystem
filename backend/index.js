@@ -8,7 +8,11 @@ const app = express();
 const port = process.env.PORT;
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: "http://127.0.0.1:5500",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"]
+}));
 
 // route
 app.use('/api/v2', router)

@@ -3,9 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Send-Mail-App</title>
 </head>
-<body>
-    <input type="text">
+<body style="margin:0; padding:0; background:#0f0f0f; height:100vh; display:flex; justify-content:center; align-items:center; font-family:Arial, sans-serif;">
+
+    <div style="background:#1a1a1a; padding:30px; border-radius:12px; width:320px; box-shadow:0 0 20px rgba(255,255,255,0.1); display:flex; flex-direction:column; gap:15px;">
+        
+        <input 
+            type="text" 
+            id="ip1"
+            placeholder="Enter Mail"
+            style="padding:12px; border:none; outline:none; border-radius:8px; background:#262626; color:white; font-size:14px;">
+
+        <textarea 
+            placeholder="Message.." 
+            id="ip2"
+            style="padding:12px; border:none; outline:none; border-radius:8px; background:#262626; color:white; font-size:14px; height:120px; resize:none;"
+        ></textarea>
+
+        <button 
+            style="padding:12px; border:none; border-radius:8px; background:#4a88ff; color:white; font-size:16px; cursor:pointer; font-weight:bold; transition:0.3s;"
+              onclick="sendMail()"
+            >
+            Send mail
+        </button>
+    </div>
+
+    <script>
+        function sendMail() {
+            var reciverMail = document.getElementById('ip1').value;
+            var message = document.getElementById('ip2').value;
+
+            fetch('http://localhost:3000/api/v2/send-mail', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    reciverMail: reciverMail,
+                    message: message
+                })
+            }).then((resp) => {
+                return resp.json();
+            }).then((data) => {
+                console.log(data);
+            }).catch((err) => {
+                console.log(`error in sending post request ${err}`);
+            })
+        }
+    </script>
 </body>
 </html>
