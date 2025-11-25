@@ -18,23 +18,39 @@ function SendMail() {
         <input
           type="text"
           placeholder="Enter Mail"
+          onChange={(e) => {
+            setReciverMail(e.target.value);
+          }}
           className="w-full p-3 rounded-xl bg-[#262626] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
         />
 
         <textarea 
           placeholder="Message..."
+          onChange={(e) => {
+            setMessage(e.target.value);
+          }}
           className="w-full h-32 p-3 rounded-xl bg-[#262626] text-white placeholder-gray-400 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
         ></textarea>
 
         <button 
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition-all shadow-md hover:shadow-blue-500/30">
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition-all shadow-md hover:shadow-blue-500/300"
+            onClick={() => {
+              axios.post('http://localhost:3000/api/v2/send-mail', {
+                reciverMail: reciverMail,
+                message: message
+              }).then((resp) => {
+                console.log(resp.data);
+              }).catch((err) => {
+                console.log(`error in sending request ${err}`);
+              })
+            }}
+          >
           Send Mail
         </button>
 
       </div>
-
     </div>
   )
 }
 
-export default SendMail
+export default SendMail;

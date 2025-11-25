@@ -2,24 +2,30 @@ import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const sendMail = async(req, res) => {
+
+const sendMail = async (req, res) => {
     try {
         const { reciverMail, message } = req.body;
-        if(!reciverMail || !message) { 
-            res.status(400).json({
+
+        
+        if (!reciverMail || !message) {
+            return res.status(400).json({
                 msg: "Provide mail and message"
             });
-            
-            const transporter = nodemailer.createTransport({
+        }
+
+        // transporter
+        const transporter = nodemailer.createTransport({
+            host: "smtp-relay.brevo.com",
             port: 587,
             secure: false,
-            host: 'smtp-relay.brevo.com',
             auth: {
                 user: process.env.BREVO_USERNAME,
                 pass: process.env.BREVO_PASSWORD
             }
         });
 
+        // mail options
         const mailOptions = {
             from: "sharmachirag242004@gmail.com",
             to: reciverMail,
@@ -27,17 +33,18 @@ const sendMail = async(req, res) => {
             text: `Hi ${reciverMail},\n\n${message}\n\nRegards`
         };
 
-         await transporter.sendMail(mailOptions);
+        // sending
+        await transporter.sendMail(mailOptions);
 
-          res.json({
+        return res.json({
             msg: `Email sent successfully to ${reciverMail}`
         });
-        }
-    } catch(err) {
+
+    } catch (err) {
         console.log(`error in send mail controller ${err}`);
-        return res.json({
+        return res.status(500).json({
             msg: "Internal server error"
-        })
+        });
     }
 }
 
