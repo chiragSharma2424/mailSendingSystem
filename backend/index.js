@@ -1,9 +1,17 @@
 import express from 'express';
 import dotnev from 'dotenv';
 import cors from 'cors';
+import router from './routes/send-mail-route.js';
+dotnev.config();
 
 const app = express();
 const port = process.env.PORT;
+
+app.use(express.json());
+app.use(cors());
+
+// route
+app.use('/api/v2', router)
 
 app.get('/', (req, res) => {
     return res.status(200).json({
